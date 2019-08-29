@@ -51,7 +51,7 @@ function new_level()
                 y = y,
             },
             vel = {
-                a = love.math.random() * 2 - 1,
+                a = love.math.random() * 4 - 2,
                 x = 100 * love.math.random() - 50,
                 y = 100 * love.math.random() - 50,
             },
@@ -208,6 +208,20 @@ function love.update(dt)
                 end
             end
         end
+    end
+
+    -- Count living enemies
+    count = 0
+    for _, a in pairs(asteroids) do
+        if not a.dead then
+            count = 1
+            break
+        end
+    end
+
+    if count == 0 then
+        level = level + 1
+        new_level()
     end
 end
 
