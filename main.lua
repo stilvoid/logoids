@@ -26,6 +26,8 @@ local asteroids = {}
 
 local level = 1
 
+local backdrop
+
 function new_level()
     asteroids = {}
 
@@ -83,6 +85,22 @@ function love.load()
     for _, file in pairs(love.filesystem.getDirectoryItems("images")) do
         sprites[#sprites + 1] = love.graphics.newImage("images/" .. file)
     end
+
+    -- Create a starfield
+    backdrop = love.graphics.newCanvas(WIDTH, HEIGHT)
+    love.graphics.setCanvas(backdrop)
+    love.graphics.clear()
+    for _ = 1, WIDTH + HEIGHT do
+        local x = love.math.random(0, WIDTH)
+        local y = love.math.random(0, HEIGHT)
+
+        love.graphics.setColor(1, 1, 1, love.math.random() * 0.75)
+
+        love.graphics.circle("fill", x, y, love.math.random() * love.math.random() * 3)
+    end
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setCanvas()
 
     new_level()
 end
@@ -226,7 +244,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.clear()
+    love.graphics.draw(backdrop, 0, 0)
 
     -- The roids
     for _, a in pairs(asteroids) do
