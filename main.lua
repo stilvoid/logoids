@@ -24,7 +24,7 @@ local bullets = {}
 
 local asteroids = {}
 
-local level = 1
+local level = 2
 
 local backdrop
 
@@ -62,7 +62,7 @@ function new_level()
 
     player.firing = false
     player.thrusting = false
-    player.rotation = 0
+    --player.rotation = 0
     player.thrust = 5
     player.turn_speed = 5
     player.vel = {x = 0, y = 0}
@@ -76,7 +76,6 @@ function love.load()
     -- Set up the display
     love.window.setMode(WIDTH, HEIGHT)
     love.mouse.setVisible(false)
-    love.mouse.setGrabbed(true)
 
     -- Load up the player sprite
     player.sprite = love.graphics.newImage("resources/player.png")
