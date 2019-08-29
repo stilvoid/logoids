@@ -171,36 +171,40 @@ function love.update(dt)
     for _, b in pairs(bullets) do
         if not b.dead then
             for _, a in pairs(asteroids) do
-                dx = a.pos.x - b.pos.x
-                dy = a.pos.y - b.pos.y
+                if not a.dead then
+                    dx = a.pos.x - b.pos.x
+                    dy = a.pos.y - b.pos.y
 
-                d = math.sqrt(dx * dx + dy + dy)
+                    s = math.max(a.sprite:getWidth(), a.sprite:getHeight()) * a.size
 
-                if d < math.max(a.sprite:getWidth(), a.sprite:getHeight()) * a.size / 3 then
-                    a.dead = true
-                    b.dead = true
+                    d = math.sqrt(dx * dx + dy * dy)
 
-                    -- Split the roid?
-                    if a.size > 0.3 then
-                        for _ = 1, 2 do
-                            asteroids[#asteroids + 1] = {
-                                sprite = a.sprite,
-                                size = a.size / 2,
-                                pos = {
-                                    a = love.math.random() * math.pi * 2,
-                                    x = a.pos.x,
-                                    y = a.pos.y,
-                                },
-                                vel = {
-                                    a = love.math.random() * 2 - 1,
-                                    x = 100 * love.math.random() - 50,
-                                    y = 100 * love.math.random() - 50,
-                                },
-                            }
+                    if d < s / 2 then
+                        a.dead = true
+                        b.dead = true
+
+                        -- Split the roid?
+                        if s > max_sprite_size / 8 then
+                            for _ = 1, 2 do
+                                asteroids[#asteroids + 1] = {
+                                    sprite = a.sprite,
+                                    size = a.size / 2,
+                                    pos = {
+                                        a = love.math.random() * math.pi * 2,
+                                        x = a.pos.x,
+                                        y = a.pos.y,
+                                    },
+                                    vel = {
+                                        a = love.math.random() * 2 - 1,
+                                        x = 100 * love.math.random() - 50,
+                                        y = 100 * love.math.random() - 50,
+                                    },
+                                }
+                            end
                         end
-                    end
 
-                    break
+                        break
+                    end
                 end
             end
         end
